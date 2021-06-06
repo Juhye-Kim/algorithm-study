@@ -6,6 +6,15 @@ const merge = (left, right) => {
   while (true) {
     if (L === left.length && R === right.length) break;
 
+    if (L === left.length) {
+      sorted.push(...right.slice(R));
+      break;
+    }
+    if (R === right.length) {
+      sorted.push(...left.slice(L));
+      break;
+    }
+
     if (left[L] < right[R]) {
       sorted.push(left[L]);
       L++;
@@ -13,29 +22,16 @@ const merge = (left, right) => {
       sorted.push(right[R]);
       R++;
     }
-
-    if (L === left.length) {
-      sorted.push(...right.slice(R));
-      break;
-    } else if (R === left.length) {
-      sorted.push(...left.slice(L));
-      break;
-    }
   }
   return sorted;
 };
 
-const devide = (arr) => {
+const mergeSort = (arr) => {
+  if (arr.length === 1) return arr;
   let middleIdx = parseInt(arr.length / 2);
-  let leftArr = arr.split(0, middleIdx);
-  let rightArr = arr.split(middleIdx);
-  return [...leftArr, ...rightArr];
-};
-
-const mergeSort = (left, right) => {
+  let left = mergeSort(arr.slice(0, middleIdx));
+  let right = mergeSort(arr.slice(middleIdx));
   return merge(left, right);
 };
 
-let left = [0, 2];
-let right = [1, 3];
-console.log(merge(left, right));
+console.log(mergeSort([30, 1, 4, 2, 5]));
