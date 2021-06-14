@@ -1,5 +1,4 @@
 // 프로그래머스 후보키
-
 function solution(relation) {
   let answer = [];
   let keys = Array(relation[0].length).fill(0);
