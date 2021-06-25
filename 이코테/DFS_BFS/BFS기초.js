@@ -6,15 +6,22 @@ function solution(input) {
 
   let visited = Array(input.length + 1).fill(false);
   visited[1] = true;
-  dfs(graph, 1, visited);
+  let Q = [1];
+  bfs(graph, 1, visited);
 
-  function dfs(graph, v, visited) {
+  function bfs(graph, v, visited) {
     if (visited.filter((el) => el).length === input.length) return;
-    visited[v] = true;
-    console.log(v);
-    graph[v].forEach((node) => {
-      if (!visited[node]) dfs(graph, node, visited);
-    });
+
+    while (Q.length) {
+      let v = Q.shift();
+      console.log(v);
+      graph[v].forEach((node) => {
+        if (!visited[node]) {
+          Q.push(node);
+          visited[node] = true;
+        }
+      });
+    }
   }
 }
 
