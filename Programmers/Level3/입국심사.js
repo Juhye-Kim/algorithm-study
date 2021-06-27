@@ -62,3 +62,27 @@ module.exports = function solution(n, times) {
   }
   return middle;
 };
+
+// ver3. 이진탐색
+function solution(n, times) {
+  times.sort((a, b) => a - b);
+  let [start, end] = [0, n * times[times.length - 1]];
+  let result;
+
+  while (start <= end) {
+    let mid = parseInt((start + end) / 2);
+    if (isAble(mid)) {
+      result = mid;
+      end = mid - 1;
+    } else {
+      start = mid + 1;
+    }
+  }
+  return result;
+
+  function isAble(mid) {
+    let total = times.reduce((sum, time) => sum + parseInt(mid / time), 0);
+    if (total >= n) return true;
+    else return false;
+  }
+}
