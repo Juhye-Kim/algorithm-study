@@ -8,7 +8,7 @@ function solution(input) {
   arr.sort((a, b) => a - b);
 
   let dist = 0;
-  let [left, right] = [1, arr[arr.length - 1] - arr[0]];
+  let [left, right] = [0, arr[arr.length - 1] - arr[0]];
   let mid = parseInt((left + right) / 2);
   while (left <= right) {
     mid = parseInt((left + right) / 2);
@@ -24,11 +24,15 @@ function solution(input) {
 
   // mid거리로 설치했을 때 다 커버 가능한지
   function isAble(mid) {
-    let cnt = 0;
-    for (let i = 0; i < N - 1; i++) {
-      if (arr[i + 1] - arr[i] <= mid) cnt++;
+    let cur = arr[0];
+    let cnt = 1;
+    for (let i = 1; i < N; i++) {
+      if (arr[i] - cur >= mid) {
+        cur = arr[i];
+        cnt++;
+      }
     }
-    if (cnt <= C) return true;
+    if (cnt >= C) return true;
     return false;
   }
 }
@@ -39,4 +43,9 @@ let input = `5 3
 8
 4
 9`;
+console.log(solution(input)); //
+input = `3 3
+1
+4
+6`;
 console.log(solution(input)); //
