@@ -1,0 +1,42 @@
+// 백준 2110 공유기 설치
+
+function solution(input) {
+  // var input = require("fs").readFileSync("/dev/stdin").toString();
+  var [nc, ...arr] = input.split("\n");
+  let [N, C] = nc.split(" ").map((el) => Number(el));
+  arr = arr.map((el) => Number(el));
+  arr.sort((a, b) => a - b);
+
+  let dist = 0;
+  let [left, right] = [1, arr[arr.length - 1] - arr[0]];
+  let mid = parseInt((left + right) / 2);
+  while (left <= right) {
+    mid = parseInt((left + right) / 2);
+    if (isAble(mid)) {
+      dist = mid;
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+  console.log(dist);
+  return;
+
+  // mid거리로 설치했을 때 다 커버 가능한지
+  function isAble(mid) {
+    let cnt = 0;
+    for (let i = 0; i < N - 1; i++) {
+      if (arr[i + 1] - arr[i] <= mid) cnt++;
+    }
+    if (cnt <= C) return true;
+    return false;
+  }
+}
+
+let input = `5 3
+1
+2
+8
+4
+9`;
+console.log(solution(input)); //
