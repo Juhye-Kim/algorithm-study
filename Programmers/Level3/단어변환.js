@@ -1,34 +1,6 @@
-// 프로그래머스 단어변환
+// 프로그래머스 단어변환 (dfs/bfs)
 
-// // ver1
-// const isEmpty = (Q) => Q.length === 0;
-// const filterWords = (words, from, step) => {
-//   let reachables = [];
-//   for (let word of words) {
-//     let cnt = word.length;
-//     for (let i in word) {
-//       if (from[i] === word[i]) cnt--;
-//     }
-//     if (cnt === 1) reachables.push([word, step + 1]);
-//   }
-//   return reachables;
-// };
-
-// function solution(begin, target, words) {
-//   const Q = [[begin, 0]];
-
-//   while (!isEmpty(Q)) {
-//     const [from, step] = Q.shift();
-
-//     if (from === target) return step;
-//     words = words.filter((el) => el !== from);
-//     const reachables = filterWords(words, from, step);
-//     Q.push(...reachables);
-//   }
-//   return 0;
-// }
-
-// ver2
+// bfs
 function solution(begin, target, words) {
   if (!words.includes(target)) return 0;
 
@@ -69,4 +41,38 @@ function isAdjacent(word, el) {
   }
   if (cnt === 1) return true;
   return false;
+}
+
+// ver3. dfs
+function solution(begin, target, words) {
+  const graph = makeGraph([begin, ...words]);
+  let min = Infinity;
+  dfs(begin, [begin], 0);
+  return min === Infinity ? 0 : min;
+
+  function dfs(cur, visited, step) {
+    if (cur === target) {
+      min = Math.min(min, step);
+      return;
+    }
+    if (visited.length === words.length + 1) return;
+    let reachables = graph[cur].filter((node) => !visited.includes(node));
+    reachables.forEach((el) => dfs(el, [...visited, el], step + 1));
+  }
+
+  function makeGraph(arr) {
+    let graph = {};
+    for (let i = 0; i < arr.length; i++) {
+      let tmp = [];
+      for (let j = 0; j < arr.length; j++) {
+        let cnt = 0;
+        for (let k = 0; k < arr[i].length; k++) {
+          if (arr[i][k] !== arr[j][k]) cnt++;
+        }
+        if (cnt === 1) tmp.push(arr[j]);
+      }
+      graph[arr[i]] = tmp;
+    }
+    return graph;
+  }
 }
