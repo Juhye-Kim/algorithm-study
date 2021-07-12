@@ -2,10 +2,8 @@
 
 function solution(A) {
   A.sort((a, b) => a - b);
-  let cur = 0;
   for (let i = 0; i < A.length; i++) {
-    if (cur + 1 !== A[i]) return 0;
-    cur++;
+    if (A[i] !== i + 1) return 0;
   }
   return 1;
 }
