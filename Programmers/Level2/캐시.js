@@ -1,4 +1,6 @@
 // 프로그래머스 캐시
+
+// ver1
 function solution(cacheSize, cities) {
   let cache = [];
   let totalTime = 0;
@@ -27,4 +29,37 @@ function addTime(cache, city) {
     if (cache[i] === city) return [i, 1];
   }
   return [-1, 5];
+}
+
+// ver2
+function solution(cacheSize, cities) {
+  if (cacheSize === 0) return 5 * cities.length;
+
+  let totalTime = 0;
+  let cache = [];
+
+  cities.forEach((city) => {
+    city = city.toLowerCase();
+
+    const { hit, idx } = isHit(city, cache);
+
+    totalTime += hit ? 1 : 5;
+
+    if (cache.length < cacheSize) cache.push(city);
+    else {
+      if (hit) {
+        cache = [...cache.slice(0, idx), ...cache.slice(idx + 1), city];
+      } else {
+        cache.shift();
+        cache.push(city);
+      }
+    }
+  });
+
+  return totalTime;
+}
+
+function isHit(city, cache) {
+  const idx = cache.findIndex((el) => el === city);
+  return { hit: idx !== -1, idx };
 }
