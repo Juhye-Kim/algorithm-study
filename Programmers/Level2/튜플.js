@@ -1,5 +1,6 @@
 // 프로그래머스 튜플
 
+// ver1.
 function solution(s) {
   let map = new Map();
   let answer = [];
@@ -12,4 +13,25 @@ function solution(s) {
     answer.push(key);
   }
   return answer;
+}
+
+// ver2.
+function solution(s) {
+  const arr = convertToArray(s);
+
+  let result = [];
+  arr.forEach((el) => {
+    el.forEach((n) => {
+      if (!result.includes(n)) result.push(n);
+    });
+  });
+  return result;
+}
+
+function convertToArray(s) {
+  return s
+    .substring(2, s.length - 2)
+    .split("},{")
+    .map((el) => el.split(",").map((n) => Number(n)))
+    .sort((a, b) => a.length - b.length);
 }
