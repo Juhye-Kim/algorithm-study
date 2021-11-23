@@ -86,3 +86,26 @@ function solution(n, times) {
     else return false;
   }
 }
+
+// ver4
+function solution(n, times) {
+  const maxTime = Math.min(...times);
+
+  let answer = 0;
+  let [left, right] = [0, maxTime];
+
+  while (left <= right) {
+    let center = parseInt((left + right) / 2);
+
+    if (isOk(center)) {
+      answer = center;
+      right = center - 1;
+    } else left = center + 1;
+  }
+
+  return answer;
+
+  function isOk(time) {
+    return n <= times.reduce((prev, cur) => prev + parseInt(time / cur), 0);
+  }
+}
