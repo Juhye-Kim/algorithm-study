@@ -28,3 +28,42 @@ function makeGraph(computers) {
   });
   return graph;
 }
+
+//ver2.
+function solution(n, computers) {
+  const graph = makeGraph(computers);
+  let visited = Array(n).fill(false);
+  let ans = 0;
+
+  for (let i = 0; i < n; i++) {
+    if (!visited[i]) {
+      let Q = [i];
+      visited[i] = true;
+
+      while (Q.length) {
+        const v = Q.shift();
+        Q.push(...filterNode(graph[v]));
+      }
+      ans++;
+    }
+  }
+
+  return ans;
+
+  function filterNode(nodes) {
+    const filtered = nodes.filter((node) => !visited[node]);
+    filtered.forEach((f) => (visited[f] = true));
+    return filtered;
+  }
+}
+
+function makeGraph(coms) {
+  let graph = {};
+
+  coms.forEach((nets, i) => {
+    graph[i] = [];
+    nets.forEach((n, j) => i !== j && n === 1 && graph[i].push(j));
+  });
+
+  return graph;
+}
