@@ -54,3 +54,44 @@ function solution(expression) {
   }
   return max;
 }
+
+// ver2.
+function solution(expression) {
+  let max = -Infinity;
+  let ex = expression.split(/([-+*])/);
+
+  const priority = [
+    ["+", "-", "*"],
+    ["+", "*", "-"],
+    ["*", "+", "-"],
+    ["*", "-", "+"],
+    ["-", "+", "*"],
+    ["-", "*", "+"],
+  ];
+
+  for (let i = 0; i < priority.length; i++) {
+    let arr = [...ex];
+
+    for (let j = 0; j < 3; j++) {
+      let ptr = 1;
+      const op = priority[i][j];
+
+      while (ptr < arr.length) {
+        if (arr[ptr] === op) {
+          const prev = Number(arr[ptr - 1]);
+          const next = Number(arr[ptr + 1]);
+
+          if (op === "+") arr[ptr - 1] = prev + next;
+          else if (op === "-") arr[ptr - 1] = prev - next;
+          else if (op === "*") arr[ptr - 1] = prev * next;
+
+          arr = [...arr.slice(0, ptr), ...arr.slice(ptr + 2)];
+        } else ptr++;
+      }
+    }
+
+    const res = Math.abs(arr[0]);
+    if (max < res) max = Math.abs(res);
+  }
+  return max;
+}
