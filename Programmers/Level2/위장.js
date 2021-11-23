@@ -77,3 +77,18 @@ function solution(clothes) {
   }
   return res - 1;
 }
+
+// ver3
+// Map 활용
+function solution(clothes) {
+  let map = new Map();
+
+  clothes.forEach(([_, type]) => {
+    if (!map.get(type)) map.set(type, 1);
+    else map.set(type, map.get(type) + 1);
+  });
+
+  let result = 1;
+  for (let c of map) result *= c[1] + 1;
+  return result - 1;
+}
